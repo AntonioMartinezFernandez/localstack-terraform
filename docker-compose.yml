@@ -1,0 +1,55 @@
+### PRO VERSION ###
+
+version: '3.8'
+
+services:
+  localstack:
+    image: localstack/localstack-pro:1.4
+    container_name: localstack-example
+    hostname: localstack
+    ports:
+      - "4566:4566"
+    environment:
+      # Declare which aws services will be used in localstack
+      # - SERVICES=sqs,sns,iam,s3,lambda,iot,kinesis
+      - DEBUG=0
+      # These variables are needed for localstack
+      - LOCALSTACK_API_KEY=MY_API_KEY
+      - AWS_DEFAULT_REGION=eu-east-1
+      - DEFAULT_REGION=eu-east-1
+      - AWS_ACCESS_KEY_ID=mock_access_key
+      - AWS_SECRET_ACCESS_KEY=mock_secret_key
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - DATA_DIR=/tmp/localstack/data
+      # Kinesis mock config
+      - KINESIS_ERROR_PROBABILITY=0.0
+    volumes:
+      - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./create-resources.sh:/docker-entrypoint-initaws.d/create-resources.sh
+
+### COMMUNITY VERSION ###
+
+# version: '3.8'
+
+# services:
+#   localstack:
+#     image: localstack/localstack
+#     container_name: localstack-example
+#     hostname: localstack
+#     ports:
+#       - "4566:4566"
+#     environment:
+#       # Declare which aws services will be used in localstack
+#       # - SERVICES=sqs,sns,iam,s3,lambda
+#       - DEBUG=0
+#       # These variables are needed for localstack
+#       - AWS_DEFAULT_REGION=eu-east-1
+#       - AWS_ACCESS_KEY_ID=mock_access_key
+#       - AWS_SECRET_ACCESS_KEY=mock_secret_key
+#       - DOCKER_HOST=unix:///var/run/docker.sock
+#       - DATA_DIR=/tmp/localstack/data
+#     volumes:
+#       - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
+#       - /var/run/docker.sock:/var/run/docker.sock
+#       - ./create-resources.sh:/docker-entrypoint-initaws.d/create-resources.sh

@@ -1,0 +1,1 @@
+echo "All LocalStack resources initialized! 🚀"
